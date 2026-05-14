@@ -1,0 +1,56 @@
+{
+  "name": "quant-poc-multi-asset",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-Native Multi-Asset Quant Portfolio: Honest Failure Report from a 1-Person Builder",
+  "homepage": "https://heoyesol.kr/quant",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Yesol-Pilot/quant-poc-multi-asset.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Yesol-Pilot/quant-poc-multi-asset/issues"
+  },
+  "license": "MIT",
+  "author": "Yesol Huh (허예솔) <dpthf1537@gmail.com> (https://heoyesol.kr)",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "build": "pnpm -r --filter './packages/*' --filter './apps/*' build",
+    "dev": "pnpm --filter @qpm/live-dashboard dev",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "test:cov": "pnpm -r test:cov",
+    "typecheck": "pnpm -r typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "pnpm -r clean && rm -rf node_modules .pnpm-store",
+    "backtest:a11": "echo 'A11 backtest (coming Week 2)'",
+    "backtest:a12": "echo 'A12 backtest (coming Week 2)'"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.3"
+  },
+  "keywords": [
+    "quant",
+    "trading",
+    "multi-asset",
+    "korean-stocks",
+    "us-stocks",
+    "options",
+    "crypto",
+    "backtest",
+    "deflated-sharpe-ratio",
+    "ai-agent",
+    "open-source",
+    "honest-failure",
+    "paper-trading",
+    "educational"
+  ]
+}

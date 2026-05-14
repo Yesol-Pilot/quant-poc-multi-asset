@@ -1,0 +1,184 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quant-poc-multi-asset"
+version = "0.1.0"
+description = "AI-Native Multi-Asset Quant Portfolio: Honest Failure Report from a 1-Person Builder"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Yesol Huh", email = "dpthf1537@gmail.com" },
+]
+maintainers = [
+    { name = "Yesol Huh", email = "dpthf1537@gmail.com" },
+]
+requires-python = ">=3.11"
+keywords = [
+    "quant",
+    "trading",
+    "multi-asset",
+    "korean-stocks",
+    "backtest",
+    "deflated-sharpe-ratio",
+    "ai-agent",
+    "open-source",
+    "honest-failure",
+    "paper-trading",
+    "educational",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    # Core
+    "pydantic>=2.10",
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "scipy>=1.14",
+    "statsmodels>=0.14",
+    # Async + HTTP
+    "httpx>=0.28",
+    "aiohttp>=3.11",
+    "websockets>=14.0",
+    # Database
+    "supabase>=2.10",
+    "psycopg[binary,pool]>=3.2",
+    # Broker APIs
+    "ib_async>=2.0",                  # IBKR (ib_insync deprecated, ib_async successor)
+    # Backtest
+    "vectorbt>=0.27",                  # opt-in for some alphas; replace with custom harness if license issues
+    # Statistical Rigor
+    "scikit-learn>=1.6",
+    # LLM Production Runtime
+    "google-generativeai>=0.8",        # Gemini 2.5 Flash
+    # Logging + Observability
+    "structlog>=24.4",
+    "opentelemetry-api>=1.29",
+    "opentelemetry-sdk>=1.29",
+    # Dev convenience
+    "rich>=13.9",
+    "tenacity>=9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=8.3",
+    "pytest-asyncio>=0.25",
+    "pytest-cov>=6.0",
+    "pytest-mock>=3.14",
+    "hypothesis>=6.122",
+    # Type checking + Linting
+    "ruff>=0.8",
+    "mypy>=1.14",
+    "pre-commit>=4.0",
+    # Notebooks
+    "jupyter>=1.1",
+    "jupyterlab>=4.3",
+]
+ml = [
+    # Optional: machine learning extensions
+    "torch>=2.5",
+    "transformers>=4.47",
+]
+options = [
+    # Optional: options pricing (A19~A21)
+    "py-vollib>=1.0",
+    "py-lets-be-rational>=1.0",
+]
+
+[project.urls]
+Homepage = "https://heoyesol.kr/quant"
+Repository = "https://github.com/Yesol-Pilot/quant-poc-multi-asset"
+Issues = "https://github.com/Yesol-Pilot/quant-poc-multi-asset/issues"
+Documentation = "https://github.com/Yesol-Pilot/quant-poc-multi-asset/tree/main/docs"
+Changelog = "https://github.com/Yesol-Pilot/quant-poc-multi-asset/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+package-dir = { "" = "packages" }
+packages = []  # populated as packages are created Week 2+
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["docs/", "notebooks/", "_archive/"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+    "S",    # flake8-bandit (security)
+    "N",    # pep8-naming
+]
+ignore = [
+    "S101",  # assert (we use pytest)
+    "E501",  # line too long (handled by formatter)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "S105", "S106"]  # asserts + test secrets
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+testpaths = ["tests", "packages"]
+python_files = "test_*.py"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: integration tests (requires external services)",
+    "paper_only: tests that must run in paper-trading mode only",
+    "kill_switch: Kill Switch related tests",
+]
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false  # progressively tighten as code grows
+no_implicit_optional = true
+strict_equality = true
+exclude = ["docs/", "notebooks/", "_archive/", "build/"]
+
+[tool.coverage.run]
+branch = true
+source = ["packages"]
+omit = [
+    "*/tests/*",
+    "*/_archive/*",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]
