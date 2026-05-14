@@ -133,5 +133,7 @@ MIT. 자세한 내용은 [LICENSE](LICENSE).
 
 ---
 
-**Built by [허예솔 (Yesol Huh)](https://heoyesol.kr) — AI-Native IT Product Manager**
-[GitHub](https://github.com/yesol-pilot) · [Portfolio](https://heoyesol.kr) · [Live Dashboard](https://heoyesol.kr/quant)
+**Maintained by [Yesol Huh (허예솔)](https://github.com/yesol-pilot)**
+[GitHub](https://github.com/yesol-pilot) · [Live Dashboard](https://heoyesol.kr/quant)
+
+*This site focuses on the project. For author identity / career inquiries, see [heoyesol.kr](https://heoyesol.kr) (separate main site).*
