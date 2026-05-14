@@ -10,8 +10,12 @@ const nextConfig: NextConfig = {
   // Standalone: keep basePath empty; integration handled by Vercel rewrites
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
 
+  // typedRoutes intentionally disabled for W1 scaffold:
+  // - Landing page has placeholder `href: '#'` strings in a .map() that
+  //   can't satisfy the RouteImpl<string> constraint.
+  // - Re-enable in W3+ once /dashboard has real typed routes wired.
+  // Reference: https://nextjs.org/docs/app/api-reference/config/next-config-js/typedRoutes
   experimental: {
-    typedRoutes: true,
     optimizePackageImports: ['@tremor/react', 'lucide-react'],
   },
 

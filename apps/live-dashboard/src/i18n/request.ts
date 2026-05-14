@@ -17,9 +17,12 @@ export const defaultLocale = 'ko' as const;
 export type Locale = (typeof locales)[number];
 
 export default getRequestConfig(async ({ locale }) => {
-  const resolved = (locales as readonly string[]).includes(locale)
-    ? (locale as Locale)
-    : defaultLocale;
+  // next-intl typings allow `locale` to be undefined when middleware hasn't
+  // matched yet (W1: middleware not wired). Default to `ko` in that case.
+  const resolved: Locale =
+    locale && (locales as readonly string[]).includes(locale)
+      ? (locale as Locale)
+      : defaultLocale;
 
   return {
     locale: resolved,
