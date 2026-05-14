@@ -1,0 +1,76 @@
+{
+  "name": "quant-poc-multi-asset",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20",
+      "nvmInstallPath": "/usr/local/share/nvm",
+      "pnpmVersion": "9.15.0"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11",
+      "installTools": true
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "ms-azuretools.vscode-docker",
+        "github.copilot",
+        "github.copilot-chat",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "supabase.supabase-vscode",
+        "antfu.unocss",
+        "yzhang.markdown-all-in-one"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.testing.pytestEnabled": true,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit",
+          "source.organizeImports": "explicit"
+        },
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescriptreact]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        }
+      }
+    }
+  },
+  "forwardPorts": [3000, 54321, 54322, 54323],
+  "portsAttributes": {
+    "3000": { "label": "Next.js live-dashboard", "onAutoForward": "openBrowser" },
+    "54321": { "label": "Supabase API", "onAutoForward": "silent" },
+    "54322": { "label": "Supabase DB", "onAutoForward": "silent" },
+    "54323": { "label": "Supabase Studio", "onAutoForward": "openBrowser" }
+  },
+  "postCreateCommand": "pnpm install --frozen-lockfile && python -m pip install --upgrade pip && pip install -e '.[dev]'",
+  "postStartCommand": "echo '✅ Dev container ready. Run: pnpm dev (Next.js) | pytest (Python) | supabase start (local DB)'",
+  "remoteUser": "vscode",
+  "workspaceFolder": "/workspaces/quant-poc-multi-asset",
+  "containerEnv": {
+    "NODE_ENV": "development",
+    "TRADING_MODE": "paper",
+    "PYTHONUNBUFFERED": "1",
+    "PIP_NO_CACHE_DIR": "1"
+  }
+}

@@ -1,0 +1,75 @@
+name: Weekly Progress (Telegram)
+
+on:
+  schedule:
+    # Every Monday 08:00 KST (23:00 UTC Sunday)
+    - cron: '0 23 * * 0'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  send-telegram-report:
+    name: Send weekly build progress to @Claude_alert_sol_bot
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50  # for git log of past week
+
+      - name: Compute week + recent commits
+        id: stats
+        run: |
+          WEEK_NUM=$(( ($(date -u +%s) - $(date -u -d '2026-05-14' +%s)) / 604800 + 1 ))
+          if [ $WEEK_NUM -gt 12 ]; then WEEK_NUM=12; fi
+          if [ $WEEK_NUM -lt 1 ]; then WEEK_NUM=1; fi
+
+          COMMITS_WEEK=$(git log --since="7 days ago" --oneline | wc -l)
+          FILES_TOUCHED=$(git log --since="7 days ago" --name-only --pretty=format: | sort -u | grep -v "^$" | wc -l)
+
+          # GitHub repo stats via API
+          STARS=$(curl -s "https://api.github.com/repos/Yesol-Pilot/quant-poc-multi-asset" | grep -m1 stargazers_count | grep -o '[0-9]\+' | head -1 || echo 0)
+          FORKS=$(curl -s "https://api.github.com/repos/Yesol-Pilot/quant-poc-multi-asset" | grep -m1 forks_count | grep -o '[0-9]\+' | head -1 || echo 0)
+          ISSUES=$(curl -s "https://api.github.com/repos/Yesol-Pilot/quant-poc-multi-asset" | grep -m1 open_issues_count | grep -o '[0-9]\+' | head -1 || echo 0)
+
+          echo "week=$WEEK_NUM" >> $GITHUB_OUTPUT
+          echo "commits=$COMMITS_WEEK" >> $GITHUB_OUTPUT
+          echo "files=$FILES_TOUCHED" >> $GITHUB_OUTPUT
+          echo "stars=$STARS" >> $GITHUB_OUTPUT
+          echo "forks=$FORKS" >> $GITHUB_OUTPUT
+          echo "issues=$ISSUES" >> $GITHUB_OUTPUT
+          echo "date_kst=$(TZ='Asia/Seoul' date '+%Y-%m-%d %H:%M KST')" >> $GITHUB_OUTPUT
+
+      - name: Send Telegram message
+        env:
+          BOT_TOKEN: ${{ secrets.CLAUDE_ALERT_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.OWNER_TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -z "$BOT_TOKEN" ] || [ -z "$CHAT_ID" ]; then
+            echo "⚠️ Secrets missing — set CLAUDE_ALERT_BOT_TOKEN + OWNER_TELEGRAM_CHAT_ID in repo settings"
+            exit 0  # don't fail the workflow; just skip
+          fi
+
+          MSG=$(cat <<EOF
+          📊 *quant-poc-multi-asset — Weekly Progress*
+          _Week ${{ steps.stats.outputs.week }} of 12 · ${{ steps.stats.outputs.date_kst }}_
+
+          • Commits this week: \`${{ steps.stats.outputs.commits }}\`
+          • Files touched: \`${{ steps.stats.outputs.files }}\`
+          • GitHub stars: \`${{ steps.stats.outputs.stars }}\`
+          • Forks: \`${{ steps.stats.outputs.forks }}\`
+          • Open issues: \`${{ steps.stats.outputs.issues }}\`
+
+          🔗 [Repo](https://github.com/Yesol-Pilot/quant-poc-multi-asset) · [Live](https://heoyesol.kr/quant)
+
+          _Strategy Lead Claude Opus 4.7 · automated weekly report_
+          EOF
+          )
+
+          curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+            -d chat_id="${CHAT_ID}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview="true" \
+            --data-urlencode "text=${MSG}" \
+            | jq -r 'if .ok then "✅ Telegram report sent (message_id=\(.result.message_id))" else "❌ \(.description)" end'
