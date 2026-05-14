@@ -1,0 +1,84 @@
+{
+  "$comment": "English message catalog. Active routing wires up in W2 (next-intl middleware + [locale] routing). Week 1: catalog only, page.tsx still uses hardcoded English with Korean fragments for SEO and dual-audience.",
+  "meta": {
+    "siteTitle": "quant-poc-multi-asset",
+    "siteDescription": "12-week, single-developer, multi-asset quant research stack — open source. Honest failure first.",
+    "siteUrl": "https://quant.heoyesol.kr"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "dashboard": "Dashboard",
+    "disclaimer": "Disclaimer",
+    "github": "GitHub",
+    "blog": "Blog"
+  },
+  "hero": {
+    "weekTag": "quant-poc-multi-asset · Week 1 of 12 · open source",
+    "headlinePrefix": "38-day Crypto PoC returned",
+    "headlineAnchor": "−15.1%",
+    "headlineSuffix": ".",
+    "subhead": "We published the failure. Now we're rebuilding across 4 asset classes, openly, with academic rigor.",
+    "ctaStar": "⭐ Star on GitHub",
+    "ctaDashboard": "Live Dashboard →"
+  },
+  "fiveDim": {
+    "heading": "5-Dimension Excellence",
+    "d1": {
+      "label": "D1 Code",
+      "target": "1,000+ tests / 90% cov",
+      "status": "in progress"
+    },
+    "d2": {
+      "label": "D2 Academic",
+      "target": "SSRN 1 + ReScience 1",
+      "status": "planned"
+    },
+    "d3": {
+      "label": "D3 OSS",
+      "target": "300~600 GitHub stars",
+      "status": "live"
+    },
+    "d4": {
+      "label": "D4 Live",
+      "target": "Lighthouse 95+",
+      "status": "scaffold"
+    },
+    "d5": {
+      "label": "D5 Community",
+      "target": "Newsletter 100~800",
+      "status": "planned"
+    }
+  },
+  "assets": {
+    "heading": "4 Asset Classes (12-week build)",
+    "korean": {
+      "name": "🇰🇷 Korean Equities",
+      "broker": "KIS Developers (mock)",
+      "alphas": "A11~A14 (Sector Rotation / Mean Reversion / Pair / PEAD)",
+      "week": "W2~3"
+    },
+    "us": {
+      "name": "🇺🇸 US Equities & ETFs",
+      "broker": "IBKR paper",
+      "alphas": "A15~A18 (Factor / Risk Parity / PEAD / Sector Momentum)",
+      "week": "W4~6"
+    },
+    "options": {
+      "name": "📈 US Options",
+      "broker": "IBKR paper",
+      "alphas": "A19~A21 (Covered Call / VRP / Iron Condor)",
+      "week": "W7~8"
+    },
+    "crypto": {
+      "name": "₿ Crypto (archive)",
+      "broker": "Binance + Bybit + OKX (read-only)",
+      "alphas": "A1~A6 — 38-day PoC closure",
+      "week": "archived"
+    }
+  },
+  "footer": {
+    "maintainedBy": "Maintained by Yesol Huh (허예솔). This site focuses on the project. For author identity / career inquiries, see heoyesol.kr (separate main site).",
+    "disclaimerNote": "Research only. Not financial advice. Read the disclaimer."
+  }
+}

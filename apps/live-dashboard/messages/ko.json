@@ -1,0 +1,84 @@
+{
+  "$comment": "한국어 메시지 카탈로그. 라우팅 활성화는 W2 예정 (next-intl middleware + [locale] route). W1: 카탈로그만, page.tsx 는 영문+한국어 혼합 (SEO+이중 청중).",
+  "meta": {
+    "siteTitle": "quant-poc-multi-asset",
+    "siteDescription": "12주 단일 개발자 멀티에셋 퀀트 리서치 스택 — 오픈소스. 정직한 실패가 먼저.",
+    "siteUrl": "https://quant.heoyesol.kr"
+  },
+  "nav": {
+    "home": "홈",
+    "about": "소개",
+    "dashboard": "대시보드",
+    "disclaimer": "면책 고지",
+    "github": "GitHub",
+    "blog": "블로그"
+  },
+  "hero": {
+    "weekTag": "quant-poc-multi-asset · 12주 중 W1 · 오픈소스",
+    "headlinePrefix": "38일 크립토 PoC 결과",
+    "headlineAnchor": "−15.1%",
+    "headlineSuffix": ".",
+    "subhead": "실패를 공개했고, 이제 4개 자산군에서 다시 짓는다. 공개적으로, 학술적 엄밀성으로.",
+    "ctaStar": "⭐ GitHub 스타",
+    "ctaDashboard": "라이브 대시보드 →"
+  },
+  "fiveDim": {
+    "heading": "5차원 우수성",
+    "d1": {
+      "label": "D1 코드",
+      "target": "테스트 1,000+ / 커버리지 90%",
+      "status": "진행 중"
+    },
+    "d2": {
+      "label": "D2 학술",
+      "target": "SSRN 1 + ReScience 1",
+      "status": "예정"
+    },
+    "d3": {
+      "label": "D3 오픈소스",
+      "target": "GitHub Star 300~600",
+      "status": "라이브"
+    },
+    "d4": {
+      "label": "D4 라이브",
+      "target": "Lighthouse 95+",
+      "status": "스캐폴드"
+    },
+    "d5": {
+      "label": "D5 커뮤니티",
+      "target": "뉴스레터 100~800",
+      "status": "예정"
+    }
+  },
+  "assets": {
+    "heading": "4개 자산군 (12주 빌드)",
+    "korean": {
+      "name": "🇰🇷 한국 주식",
+      "broker": "KIS Developers (모의)",
+      "alphas": "A11~A14 (섹터 로테이션 / 평균회귀 / 페어 / PEAD)",
+      "week": "W2~3"
+    },
+    "us": {
+      "name": "🇺🇸 미국 주식 & ETF",
+      "broker": "IBKR paper",
+      "alphas": "A15~A18 (팩터 / 리스크 패리티 / PEAD / 섹터 모멘텀)",
+      "week": "W4~6"
+    },
+    "options": {
+      "name": "📈 미국 옵션",
+      "broker": "IBKR paper",
+      "alphas": "A19~A21 (커버드콜 / VRP / 아이언콘도르)",
+      "week": "W7~8"
+    },
+    "crypto": {
+      "name": "₿ 크립토 (아카이브)",
+      "broker": "Binance + Bybit + OKX (읽기 전용)",
+      "alphas": "A1~A6 — 38일 PoC 종결",
+      "week": "아카이브 완료"
+    }
+  },
+  "footer": {
+    "maintainedBy": "Yesol Huh (허예솔) 운영. 이 사이트는 프로젝트 전용입니다. 운영자 신원·커리어 문의는 heoyesol.kr (별도 메인 사이트)을 보세요.",
+    "disclaimerNote": "연구 목적. 투자 자문 아님. 면책 고지를 먼저 읽어주세요."
+  }
+}
