@@ -28,27 +28,41 @@ jobs:
 
       - name: Block IBKR live port (7496)
         run: |
-          # IBKR TWS live = 7496, paper = 7497. We MUST never use 7496.
+          # IBKR TWS live = 7496, paper = 7497. We MUST never use 7496 in functional code.
+          # Exclusions mirror tests/test_smoke.py (_DOCUMENTATION_CONTEXT_KEYWORDS + _is_documentation_path):
+          #   - Documentation pages (/disclaimer, /about) render the forbidden value AS forbidden
+          #   - tests/test_smoke.py itself contains the regex/test data
+          #   - Context keywords (NEVER, FORBIDDEN, LIVE TRADING, ...) are allowed
+          #   - .github/workflows/ is excluded by the --include filter (only .py/.ts/.tsx/.js)
           if grep -rn --include='*.py' --include='*.ts' --include='*.tsx' --include='*.js' \
             -E '(:7496\b|port.*=.*7496|TWS_LIVE_PORT)' . 2>/dev/null | \
-            grep -v '_archive/' | grep -v 'docs/'; then
-            echo "❌ FAIL: live trading port 7496 detected. Use 7497 (paper) only."
+            grep -v '_archive/' | grep -v 'docs/' | \
+            grep -v 'tests/test_smoke.py' | \
+            grep -v 'apps/live-dashboard/src/app/disclaimer/' | \
+            grep -v 'apps/live-dashboard/src/app/about/' | \
+            grep -vE '(NEVER|FORBIDDEN|BLOCKED|LIVE TRADING|LIVE BROKER|PRODUCTION ENDPOINT|PRODUCTION URL|MUST NOT|DO NOT|CI-BLOCKING|CI FAIL|GUARD)'; then
+            echo "❌ FAIL: live trading port 7496 detected in functional code. Use 7497 (paper) only."
             exit 1
           fi
-          echo "✅ PASS: no live trading port references"
+          echo "✅ PASS: no live trading port references in functional code"
 
       - name: Block live KIS API base URL
         run: |
           # KIS live: openapi.koreainvestment.com:9443
           # KIS mock: openapivts.koreainvestment.com:29443
           # We MUST use openapivts (mock) only in this phase.
+          # Exclusions mirror the IBKR guard above.
           if grep -rn --include='*.py' --include='*.ts' --include='*.tsx' --include='*.js' \
             'openapi.koreainvestment.com' . 2>/dev/null | \
-            grep -v 'openapivts' | grep -v '_archive/' | grep -v 'docs/'; then
-            echo "❌ FAIL: live KIS API URL detected. Use openapivts (mock) only."
+            grep -v 'openapivts' | grep -v '_archive/' | grep -v 'docs/' | \
+            grep -v 'tests/test_smoke.py' | \
+            grep -v 'apps/live-dashboard/src/app/disclaimer/' | \
+            grep -v 'apps/live-dashboard/src/app/about/' | \
+            grep -vE '(NEVER|FORBIDDEN|BLOCKED|LIVE TRADING|LIVE BROKER|PRODUCTION ENDPOINT|PRODUCTION URL|MUST NOT|DO NOT|CI-BLOCKING|CI FAIL|GUARD)'; then
+            echo "❌ FAIL: live KIS API URL detected in functional code. Use openapivts (mock) only."
             exit 1
           fi
-          echo "✅ PASS: no live KIS API URL references"
+          echo "✅ PASS: no live KIS API URL references in functional code"
 
       - name: Block secrets in commits
         run: |

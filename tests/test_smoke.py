@@ -85,11 +85,17 @@ def _is_documentation_context(line: str) -> bool:
 
 
 def _is_documentation_path(f: Path) -> bool:
-    """Page files (App Router) and workflow files that *render* documentation of forbidden patterns."""
+    """File renders documentation OF the forbidden patterns (not functional code).
+
+    Intentionally narrow: only `page.tsx` in the App Router documentation routes
+    and the named top-level markdown files. Any other file in those routes
+    (`layout.tsx`, `loading.tsx`, `lib/*.ts`, etc.) is still subject to the guard,
+    so accidentally placing functional code under `disclaimer/` still trips it.
+    """
     path_str = str(f).replace("\\", "/").lower()
     return (
-        "/disclaimer/" in path_str
-        or "/about/" in path_str
+        path_str.endswith("/disclaimer/page.tsx")
+        or path_str.endswith("/about/page.tsx")
         or "/.github/workflows/" in path_str
         or path_str.endswith("/disclaimer.md")
         or path_str.endswith("/security.md")
