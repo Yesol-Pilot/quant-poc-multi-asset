@@ -1,0 +1,98 @@
+# Node.js / pnpm
+node_modules/
+.pnpm-store/
+.pnpm-debug.log
+dist/
+.next/
+out/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# Notebooks
+.ipynb_checkpoints/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Environment variables (CRITICAL: never commit secrets)
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+secrets/
+
+# API keys / credentials
+*credentials*
+*secret*
+*token*
+!secrets.example
+config/secrets.yml
+
+# Build outputs
+build/
+docs/build/
+.docusaurus/
+.cache/
+.parcel-cache/
+
+# Vercel
+.vercel/
+
+# Supabase
+.supabase/
+
+# Test artifacts
+tests/output/
+tests/.cache/
+
+# Database dumps
+*.dump
+*.sql.gz
+backtest-data/
+historical-data/
+
+# Logs
+*.log
+logs/
+pm2-*.log
+
+# OS
+Thumbs.db
+.directory
+
+# Backup
+*.bak
+*.backup
+
+# Local
+local/
+.local/
+tmp/
+temp/
+
+# Paper trading state (sensitive, even though simulated)
+state/paper/
+*.state.json
+*portfolio-state*.json
