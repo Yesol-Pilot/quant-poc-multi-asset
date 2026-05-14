@@ -81,6 +81,29 @@ Week 1 (5/14 ~ 5/20) — Setup phase. All entries below land on the same date un
 - 4 Design specs from `docs/design/` (linked from ARCHITECTURE.md + ROADMAP)
 - 3 marketing drafts ready for owner-action publish in W2
 
+### Fixed — W1 D5 (2026-05-14, Wed evening) — Build chain green + first deploy READY
+
+Sequence of 4 Vercel build failures debugged and fixed:
+
+- **Vercel install**: `installCommand` changed from `"echo 'install handled by buildCommand'"` (no-op) to actually running pnpm install. Without install, Vercel's Next.js framework probe failed because `node_modules/next` didn't exist.
+- **pnpm version mismatch**: Vercel's bundled pnpm is `6.35.1` but root `package.json` declares `engines.pnpm >=9.0.0`. First fix attempt `npm install -g pnpm@9.15.0` succeeded but the next `pnpm install` line still resolved to PATH's pnpm 6 (Vercel's `/usr/local/bin/pnpm` wins over npm global bin). Final fix uses `npx --yes pnpm@9.15.0` to bypass PATH entirely.
+- **Next.js `experimental.typedRoutes`**: Incompatible with placeholder `href: '#'` strings in a `.map()` on the landing page (TypeScript requires `RouteImpl<string>` for typed routes). Disabled for W1; re-enable in W3+ when `/dashboard` has real typed routes wired.
+- **next-intl request config**: `getRequestConfig` callback `locale` is typed `string | undefined` (middleware not wired in W1). Narrowed to `defaultLocale` (`ko`) when undefined.
+- **Vitest dependencies**: Added `jsdom`, `@vitejs/plugin-react`, `@testing-library/jest-dom` to apps/live-dashboard devDependencies. Updated `vitest.config.ts` to register `react()` plugin.
+- **Vitest selectors**: `getByText(/pattern/)` and `getByRole(name: regex)` raised `getMultipleElementsFoundError` for any pattern that appeared in a link inside a `<p>` (parent + child both match). Replaced with `getAllByRole('link')` + href filter and a `getAllByText` + length-check helper.
+- **Smoke test allowlist**: `test_no_live_kis_url_in_source` + `test_no_live_ibkr_port_in_source` were flagging the disclaimer page itself, which legitimately documents the forbidden patterns. Added `_DOCUMENTATION_CONTEXT_KEYWORDS` (`NEVER`, `FORBIDDEN`, `LIVE TRADING`, `PRODUCTION ENDPOINT`, `MUST NOT`, `DO NOT`, `CI-BLOCKING`, `CI FAIL`, `GUARD`) plus `_is_documentation_path` (`/disclaimer/`, `/about/`, `/.github/workflows/`, `disclaimer.md`, `security.md`, `readme.md`) skip lists.
+
+### Verified — W1 D5 — Live production
+
+- Deployment `dpl_J1dTG4cxG7TU3hjujxNTE9marn97` (commit `0e7e308`) → state `READY`
+- `https://quant.heoyesol.kr/` — HTTP 200, 24.9 KB, 290 ms
+- `/about`, `/disclaimer`, `/dashboard` — HTTP 200 each
+- Hero anchors verified in live HTML: `−15.1%`, `Week 1 of 12`, `5-Dimension`, `4 Asset Classes`, `Korean Equities`, `US Options`, `Crypto`, `Star on GitHub`, `heoyesol.kr`
+- `pytest tests/test_smoke.py` → 7/7 PASS
+- `pnpm --filter @qpm/live-dashboard test` → 5/5 PASS (130 ms)
+- `pnpm --filter @qpm/live-dashboard build` → 5 static pages, First Load JS 102 kB
+- Lighthouse (first baseline, live): Performance **100**, Accessibility **100**, Best Practices **96**, SEO **100**; FCP 1.3 s, LCP 1.4 s, CLS 0, TBT 20 ms, Speed Index 1.5 s, TTI 1.6 s
+
 ### Infrastructure decisions (locked-in W1)
 
 - Vercel team: `yesol-pilot's projects` (`team_YQwNNAv4XjpyZALb2O8A67tL`)

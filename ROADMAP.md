@@ -78,17 +78,46 @@ W12 (7/30~8/5)   LAUNCH          : SSRN submit + ReScience submit + Hacker News 
 - [x] `docs/marketing/twitter-pinned-tweet.md` (single pin + 5-tweet thread + 3 A/B variants)
 - [x] `docs/marketing/linkedin-launch-post.md` (en + ko launch posts + engagement playbook)
 
-### D5~D7 (Sat 5/18 ~ Mon 5/20) — Owner-action window + buffer
+### D5 (Wed 5/14 evening) — Build chain stabilization [done]
+4 Vercel build failures → READY chain debugged and fixed in 4 commits + 1 test commit:
+- [x] **commit `3885148`**: `installCommand` now actually installs (was `echo` no-op)
+- [x] **commit `4643615`**: `engines.pnpm >=9.0.0` vs Vercel bundled pnpm 6.35.1 — tried `npm i -g pnpm@9.15.0` (PATH precedence bug)
+- [x] **commit `188a4ad`**: `npx --yes pnpm@9.15.0` to bypass PATH entirely — pnpm 9.15 now executes
+- [x] **commit `0e7e308`**: TypeScript errors fixed — `typedRoutes` disabled (placeholder `href: '#'` map incompatible), `i18n/request.ts` locale undefined narrowed, jsdom + @vitejs/plugin-react devDeps added
+- [x] **commit `4306fd6`**: Vitest selectors fixed (href-based instead of accessible-name regex)
+- [x] `pytest tests/test_smoke.py --no-cov` → **7/7 PASS** (added `_DOCUMENTATION_CONTEXT_KEYWORDS` allowlist + `_is_documentation_path` for disclaimer page)
+- [x] `pnpm --filter @qpm/live-dashboard test` → **5/5 PASS** (130 ms)
+- [x] `pnpm --filter @qpm/live-dashboard build` → **5 static pages**, First Load JS 102 kB
+- [x] **Vercel deploy `0e7e308` state=READY**, `https://quant.heoyesol.kr/` HTTP 200 (24.9 KB, 290 ms)
+- [x] 4 routes (/, /about, /disclaimer, /dashboard) all return HTTP 200
+- [x] Hero anchors verified live: `−15.1%`, `Week 1 of 12`, `5-Dimension`, `4 Asset Classes`, `Korean Equities`, `Star on GitHub`, `heoyesol.kr`
+
+### D5.1 — Lighthouse W1 baseline [done]
+First baseline pass against live production deployment:
+
+| Category | W1 score | W1 target | W11 target |
+|---|---|---|---|
+| Performance | **100** | ≥85 | ≥95 |
+| Accessibility | **100** | ≥85 | ≥95 |
+| Best Practices | **96** | ≥85 | ≥95 |
+| SEO | **100** | ≥85 | ≥95 |
+
+Core Web Vitals (all in "Good" range):
+- First Contentful Paint: 1.3 s (good <1.8 s)
+- Largest Contentful Paint: 1.4 s (good <2.5 s)
+- Cumulative Layout Shift: 0 (good <0.1)
+- Total Blocking Time: 20 ms (good <200 ms)
+- Speed Index: 1.5 s
+- Time to Interactive: 1.6 s
+
+### D6~D7 (Sat 5/18 ~ Mon 5/20) — Owner-action window + buffer
 - [ ] Owner: KIS Developers signup (2~3h, blocking W2 D8 KIS integration)
-- [ ] Owner: Twitter/LinkedIn handles confirmed → bios deployed
+- [ ] Owner: Twitter/LinkedIn handles confirmed → `docs/marketing/profile-bios.md` deployed
 - [ ] Owner: Substack publication created → publication name decided
 - [ ] Owner: GitHub repo secrets — `CLAUDE_ALERT_BOT_TOKEN` + `OWNER_TELEGRAM_CHAT_ID` (3 min, activates weekly cron)
 - [ ] Owner: Discord server skeleton (optional, W3+)
-- [ ] Strategy Lead: Vercel first deployment trigger (push event will auto-deploy)
-- [ ] Strategy Lead: Verify `https://quant.heoyesol.kr` returns 200 with hero
-- [ ] Strategy Lead: Run `pnpm test` in `apps/live-dashboard` once env is up (Vitest jsdom)
-- [ ] Strategy Lead: Run `pytest tests/test_smoke.py` (7 smoke tests)
-- [ ] Strategy Lead: Lighthouse first-run baseline (target ≥85 for W1, ≥95 for W11)
+- [ ] Strategy Lead: pnpm-lock.yaml commit decision (currently uncommitted)
+- [ ] Strategy Lead: GitHub Actions CI live test (Node + Python jobs trigger on PR)
 
 ---
 
