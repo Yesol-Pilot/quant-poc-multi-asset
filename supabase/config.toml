@@ -1,0 +1,47 @@
+# Supabase project config — quant-poc-multi-asset
+# Reference: https://supabase.com/docs/guides/cli/config
+
+project_id = "quant-poc-multi-asset"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.pooler]
+enabled = false
+port = 54329
+pool_mode = "transaction"
+default_pool_size = 20
+max_client_conn = 100
+
+[realtime]
+enabled = true
+
+# Realtime subscriptions for dashboard
+[realtime.tenants.default]
+max_concurrent_users = 200
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = false  # not used in MVP
+
+[auth]
+enabled = false  # public dashboard, no auth in MVP
+
+[edge_functions]
+enabled = false  # may enable later for Public API rate limit

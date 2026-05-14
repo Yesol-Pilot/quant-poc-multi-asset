@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  /* Design System tokens — see docs/design/04-live-page-product-spec.md §5 */
+
+  /* Typography */
+  --font-sans: "Pretendard Variable", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* Color (OKLCH-based, light mode default; dark mode via .dark class) */
+  --color-bg: oklch(99% 0.005 250);
+  --color-fg: oklch(20% 0.02 250);
+  --color-muted: oklch(96% 0.005 250);
+  --color-muted-foreground: oklch(45% 0.02 250);
+  --color-border: oklch(90% 0.008 250);
+  --color-primary: oklch(55% 0.16 250);
+  --color-primary-foreground: oklch(99% 0.005 250);
+
+  /* Semantic */
+  --color-success: oklch(60% 0.15 145);
+  --color-warning: oklch(75% 0.15 80);
+  --color-danger: oklch(60% 0.20 25);
+  --color-info: oklch(60% 0.15 230);
+
+  /* Asset-specific accents (Honest Failure framing aware) */
+  --color-korea: oklch(60% 0.18 25);     /* Korean stocks */
+  --color-us: oklch(55% 0.15 230);       /* US stocks */
+  --color-options: oklch(60% 0.18 280);  /* Options */
+  --color-crypto: oklch(70% 0.15 60);    /* Crypto (archive only) */
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    min-height: 100vh;
+  }
+
+  code,
+  pre {
+    font-family: var(--font-mono);
+  }
+
+  /* Honest Failure framing — recurring visual pattern */
+  .honest-failure {
+    color: var(--color-danger);
+    font-weight: 600;
+  }
+
+  /* LIVE indicator pulse */
+  .live-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+}
+
+@layer utilities {
+  /* Disclaimer footer — sticky across all pages */
+  .disclaimer-footer {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--color-muted);
+    border-top: 1px solid var(--color-border);
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    color: var(--color-muted-foreground);
+    text-align: center;
+  }
+}
