@@ -50,7 +50,10 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.ico',
+    // Point at the generated icon route (apps/.../app/icon.tsx). The
+    // explicit URL prevents Next.js from auto-inserting a /favicon.ico
+    // link that would 404 (the project doesn't ship a static .ico file).
+    icon: [{ url: '/icon', sizes: '32x32', type: 'image/png' }],
   },
 };
 
