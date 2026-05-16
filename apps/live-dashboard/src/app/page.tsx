@@ -114,22 +114,63 @@ export default function HomePage() {
         <h2 className="text-2xl font-bold mb-6">Documentation</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {[
-            { href: '#', label: 'Research (16 reports)', note: 'Coming W2' },
-            { href: '#', label: 'Design Specs (4)', note: 'Coming W2' },
-            { href: '#', label: 'Papers (SSRN/ReScience)', note: 'Coming W12' },
-            { href: '#', label: 'Blog', note: 'Coming W2' },
-          ].map((l) => (
-            <Link
-              key={l.label}
-              href={l.href}
-              className="p-4 border border-[color:var(--color-border)] rounded-lg hover:bg-[color:var(--color-muted)] transition"
-            >
-              <p className="font-medium">{l.label}</p>
-              <p className="text-xs text-[color:var(--color-muted-foreground)]">
-                {l.note}
-              </p>
-            </Link>
-          ))}
+            {
+              href: '/research',
+              label: 'Research (17 reports)',
+              note: '~65,000 words · 300+ refs',
+            },
+            {
+              href: '/design',
+              label: 'Design specs (4)',
+              note: 'Architecture · alphas · plan',
+            },
+            {
+              href: 'https://github.com/Yesol-Pilot/quant-poc-multi-asset/tree/main/docs/adr',
+              label: 'ADRs (3)',
+              note: 'Build / decision log',
+              external: true,
+            },
+            {
+              href: '#',
+              label: 'Papers (SSRN / ReScience)',
+              note: 'Coming W12',
+              placeholder: true,
+            },
+          ].map((l) =>
+            l.external ? (
+              <a
+                key={l.label}
+                href={l.href}
+                className="p-4 border border-[color:var(--color-border)] rounded-lg hover:bg-[color:var(--color-muted)] transition"
+              >
+                <p className="font-medium">{l.label}</p>
+                <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                  {l.note}
+                </p>
+              </a>
+            ) : l.placeholder ? (
+              <div
+                key={l.label}
+                className="p-4 border border-dashed border-[color:var(--color-border)] rounded-lg opacity-60"
+              >
+                <p className="font-medium">{l.label}</p>
+                <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                  {l.note}
+                </p>
+              </div>
+            ) : (
+              <Link
+                key={l.label}
+                href={l.href}
+                className="p-4 border border-[color:var(--color-border)] rounded-lg hover:bg-[color:var(--color-muted)] transition"
+              >
+                <p className="font-medium">{l.label}</p>
+                <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                  {l.note}
+                </p>
+              </Link>
+            ),
+          )}
         </div>
       </section>
 
