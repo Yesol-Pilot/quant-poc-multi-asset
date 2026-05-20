@@ -110,10 +110,14 @@ class AlphaSignal(BaseModel):
 
 
 class OrderIntent(BaseModel):
-    """What the execution layer should attempt. `kill_switch_checked` MUST be
-    True before a live runner submits; the runner asserts this to guarantee no
-    order bypasses the 12-layer gate. Paper/backtest runners may set it via the
-    simulated kill switch."""
+    """What the execution layer should attempt.
+
+    `kill_switch_checked` defaults False. The convention (to be ENFORCED by the
+    live runner once it exists in W4+) is that a live submit path must set it
+    True only after the 12-layer gate passes. As of W2 there is no live runner,
+    so this is a documented invariant the runner WILL assert — not a currently
+    active control. Paper/backtest runners set it via the simulated kill switch.
+    """
 
     symbol: str
     side: Side

@@ -91,12 +91,18 @@ def test_pbo_low_for_genuinely_good_strategy() -> None:
 
 
 def test_pbo_high_for_pure_noise() -> None:
-    # All configs are noise; IS winner is random => OOS rank ~ uniform =>
-    # PBO should hover around 0.5 (no better than chance).
+    # All configs are noise; IS winner is random => OOS rank ~ uniform => PBO
+    # centers near 0.5. A single matrix is high-variance (a pinned-seed >0.2
+    # assertion is fragile — fails ~11% of seeds), so AVERAGE over many noise
+    # realizations: the mean must land in the "no robust edge" zone near 0.5.
     T, N = 240, 10
-    M = RNG.normal(0, 0.01, (T, N))
-    res = probability_of_backtest_overfitting(M, n_partitions=8)
-    assert res.pbo > 0.2  # pure noise should not look like a robust edge
+    pbos = []
+    for _ in range(30):
+        M = RNG.normal(0, 0.01, (T, N))
+        pbos.append(probability_of_backtest_overfitting(M, n_partitions=8).pbo)
+    mean_pbo = float(np.mean(pbos))
+    # mean PBO for pure noise should be solidly above the "genuine edge" band
+    assert mean_pbo > 0.35, f"noise mean PBO {mean_pbo:.3f} unexpectedly low"
 
 
 def test_pbo_rejects_odd_partitions() -> None:

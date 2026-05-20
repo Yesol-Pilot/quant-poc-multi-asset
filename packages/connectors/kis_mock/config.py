@@ -11,14 +11,19 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
+from urllib.parse import urlparse
 
 # The only base URL this connector will accept. Mock/paper trading domain.
 MOCK_BASE_URL = "https://openapivts.koreainvestment.com:29443"
-_LIVE_FRAGMENT = "openapi.koreainvestment.com"  # FORBIDDEN live host (note: no "vts")
+# Allowlist — the EXACT hostname the client may talk to. Anything else is
+# rejected. (Allowlist, not blocklist: a blocklist of "the live host" lets
+# every other host through, including a real-money endpoint under a different
+# name or a look-alike like "openapivts.evil.com".)
+_ALLOWED_HOST = "openapivts.koreainvestment.com"
 
 
 class LiveEndpointError(RuntimeError):
-    """Raised when a non-mock (live) KIS endpoint is configured."""
+    """Raised when a non-mock (non-allowlisted) KIS endpoint is configured."""
 
 
 @dataclass(frozen=True)
@@ -32,18 +37,24 @@ class KisConfig:
     max_retries: int = 3
 
     def __post_init__(self) -> None:
-        # Reject the live endpoint. The mock domain contains "openapivts";
-        # the live domain is "openapi" without "vts".
-        host = self.base_url.lower()
-        if "openapivts" not in host and _LIVE_FRAGMENT in host:
+        # ALLOWLIST: the parsed hostname must be EXACTLY the mock host, over
+        # https. Fail closed on anything else (empty, malformed, look-alike,
+        # live host, different scheme). This is the runtime mirror of the CI
+        # paper-only-guard and the reason no code path can reach production.
+        parsed = urlparse(self.base_url)
+        host = (parsed.hostname or "").lower()
+        scheme = (parsed.scheme or "").lower()
+        if host != _ALLOWED_HOST or scheme != "https":
             raise LiveEndpointError(
-                f"Refusing live KIS endpoint {self.base_url!r}. "
+                f"Refusing non-mock KIS endpoint {self.base_url!r} "
+                f"(host={host!r}, scheme={scheme!r}). "
                 f"Only the mock endpoint ({MOCK_BASE_URL}) is allowed in this phase."
             )
 
     @property
     def is_mock(self) -> bool:
-        return "openapivts" in self.base_url.lower()
+        # By construction (allowlist), a constructed KisConfig is always mock.
+        return urlparse(self.base_url).hostname == _ALLOWED_HOST
 
     @property
     def has_credentials(self) -> bool:

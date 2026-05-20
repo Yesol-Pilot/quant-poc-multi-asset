@@ -34,10 +34,39 @@ def test_config_rejects_live_endpoint() -> None:
         )
 
 
+@pytest.mark.parametrize(
+    "bad_url",
+    [
+        "https://openapivts.evil.com/live",        # look-alike: "openapivts" substring, wrong host
+        "https://api.koreainvestment.com:9443",    # different live-ish host
+        "https://openapi-real.koreainvestment.com",  # not the exact mock host
+        "https://prod.kistrade.com",               # unrelated trading host
+        "http://openapivts.koreainvestment.com:29443",  # right host, wrong scheme (http)
+        "https://openapivts.koreainvestment.com.evil.com",  # suffix attack
+        "",                                        # empty / malformed
+        "not-a-url",                               # garbage
+    ],
+)
+def test_config_rejects_bypass_attempts(bad_url: str) -> None:
+    """Allowlist must reject everything that isn't the exact mock host over
+    https — not just the one literal live URL. (Grill 2026-05-20.)"""
+    with pytest.raises(LiveEndpointError):
+        KisConfig(app_key="k", app_secret="s", base_url=bad_url)
+
+
 def test_config_accepts_mock_endpoint() -> None:
     cfg = KisConfig(app_key="k", app_secret="s", base_url=MOCK_BASE_URL)
     assert cfg.is_mock is True
     assert cfg.has_credentials is True
+
+
+def test_config_accepts_mock_with_trailing_path() -> None:
+    # Same host, https — allowed even with a path/trailing slash.
+    cfg = KisConfig(
+        app_key="k", app_secret="s",
+        base_url="https://openapivts.koreainvestment.com:29443/",
+    )
+    assert cfg.is_mock is True
 
 
 def test_load_from_env_offline_when_no_keys() -> None:
