@@ -11,6 +11,17 @@ const BASE_URL = 'https://quant.heoyesol.kr';
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
+      // AI search engines / agents — explicit full allow (agent-era visibility)
+      { userAgent: 'GPTBot', allow: '/' },
+      { userAgent: 'ChatGPT-User', allow: '/' },
+      { userAgent: 'OAI-SearchBot', allow: '/' },
+      { userAgent: 'PerplexityBot', allow: '/' },
+      { userAgent: 'ClaudeBot', allow: '/' },
+      { userAgent: 'anthropic-ai', allow: '/' },
+      { userAgent: 'Google-Extended', allow: '/' },
+      { userAgent: 'Applebot-Extended', allow: '/' },
+      { userAgent: 'CCBot', allow: '/' },
+      // general crawlers
       {
         userAgent: '*',
         allow: '/',
