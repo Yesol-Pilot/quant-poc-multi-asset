@@ -115,9 +115,14 @@ def test_no_live_kis_url_in_source() -> None:
     for ext in ("*.py", "*.ts", "*.tsx", "*.js", "*.json"):
         for f in REPO_ROOT.rglob(ext):
             parts = set(f.parts)
-            if "_archive" in parts or "docs" in parts or "node_modules" in parts:
-                continue
-            if f.name == "test_smoke.py":
+            # tests/ exercise the guards (must reference forbidden patterns to
+            # verify rejection); they are not production code.
+            if (
+                "_archive" in parts
+                or "docs" in parts
+                or "node_modules" in parts
+                or "tests" in parts
+            ):
                 continue
             if _is_documentation_path(f):
                 continue
@@ -143,9 +148,12 @@ def test_no_live_ibkr_port_in_source() -> None:
     for ext in ("*.py", "*.ts", "*.tsx", "*.js"):
         for f in REPO_ROOT.rglob(ext):
             parts = set(f.parts)
-            if "_archive" in parts or "docs" in parts or "node_modules" in parts:
-                continue
-            if f.name == "test_smoke.py":
+            if (
+                "_archive" in parts
+                or "docs" in parts
+                or "node_modules" in parts
+                or "tests" in parts
+            ):
                 continue
             if _is_documentation_path(f):
                 continue

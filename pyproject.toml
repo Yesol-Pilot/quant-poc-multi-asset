@@ -107,7 +107,12 @@ Changelog = "https://github.com/Yesol-Pilot/quant-poc-multi-asset/blob/main/CHAN
 
 [tool.setuptools]
 package-dir = { "" = "packages" }
-packages = []  # populated as packages are created Week 2+
+packages = [
+    "core",
+    "core.backtest",
+    "connectors",
+    "connectors.kis_mock",
+]
 
 [tool.ruff]
 line-length = 100
@@ -135,6 +140,7 @@ ignore = [
 
 [tool.pytest.ini_options]
 minversion = "8.0"
+asyncio_mode = "auto"  # async tests run without per-test @pytest.mark.asyncio
 addopts = [
     "-ra",
     "--strict-markers",
