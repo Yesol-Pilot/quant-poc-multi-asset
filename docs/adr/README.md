@@ -11,6 +11,10 @@ The format is loosely based on Michael Nygard's
 | [0001](./0001-ib_async-not-ib_insync.md) | 2026-05-14 | Accepted | Use `ib_async` (NOT `ib_insync`) for IBKR |
 | [0002](./0002-npx-pnpm-for-vercel.md)    | 2026-05-14 | Accepted | Pin pnpm via `npx --yes pnpm@9.15.0` in Vercel build |
 | [0003](./0003-typedroutes-deferred-to-w3.md) | 2026-05-14 | Accepted | Defer Next.js `typedRoutes` to W3+ |
+| [0004](./0004-honest-failure-framing.md) | 2026-05-14 | Accepted | Lead with the −15.1% failure; site is project-only |
+| [0005](./0005-supabase-rls-public-read.md) | 2026-05-14 | Accepted | Supabase RLS public-read, anon key only on the dashboard |
+| [0006](./0006-docs-fs-server-rendering.md) | 2026-05-14 | Accepted | Render docs/ markdown via fs at build time, not a CMS |
+| [0007](./0007-tailwind-v4-typography-plugin.md) | 2026-05-14 | Accepted | Tailwind v4 CSS-first `@plugin` for typography |
 
 ## When to write a new ADR
 

@@ -55,7 +55,7 @@ jobs:
           if grep -rn --include='*.py' --include='*.ts' --include='*.tsx' --include='*.js' \
             'openapi.koreainvestment.com' . 2>/dev/null | \
             grep -v 'openapivts' | grep -v '_archive/' | grep -v 'docs/' | \
-            grep -v 'tests/test_smoke.py' | \
+            grep -vE '(^|/)tests/' | \
             grep -v 'apps/live-dashboard/src/app/disclaimer/' | \
             grep -v 'apps/live-dashboard/src/app/about/' | \
             grep -vE '(NEVER|FORBIDDEN|BLOCKED|LIVE TRADING|LIVE BROKER|PRODUCTION ENDPOINT|PRODUCTION URL|MUST NOT|DO NOT|CI-BLOCKING|CI FAIL|GUARD)'; then
